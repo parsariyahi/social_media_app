@@ -7,7 +7,7 @@
     <meta name="author" content="Lorenzo Angelino aka MrLolok">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css')}}">
     <style>
         body {
             background-color: #303641;
@@ -21,12 +21,12 @@
             <i class="material-icons lock">lock</i> Login
         </div>
 
-        <form>
+        <form action="profile" method="post">
             <div class="input">
                 <div class="input-addon">
                     <i class="material-icons">face</i>
                 </div>
-                <input id="username" placeholder="Username" type="text" required class="validate" autocomplete="off">
+                <input id="username" name="username" placeholder="Username" type="text" required class="validate" autocomplete="off">
             </div>
 
             <div class="clearfix"></div>
@@ -35,15 +35,15 @@
                 <div class="input-addon">
                     <i class="material-icons">vpn_key</i>
                 </div>
-                <input id="password" placeholder="Password" type="password" required class="validate" autocomplete="off">
+                <input id="password" name="password" placeholder="Password" type="password" required class="validate" autocomplete="off">
             </div>
 
-            <input type="submit" value="Log In" />
+            <input type="submit" name="login" value="Log In" />
         </form>
 
         <div class="register">
             Don't have an account yet?
-            <a href="#"><button id="register-link">Register here</button></a>
+            <a href="{{ url_for('register') }}"><button id="register-link">Register here</button></a>
         </div>
     </div>
 </body>

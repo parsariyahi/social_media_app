@@ -1,13 +1,5 @@
 from hashlib import md5
-import mysql.connector
 
-#TODO move this in to main file and use it from there
-mydb = mysql.connector.connect(
-  host="localhost",
-  database="pars_messenger",
-  user="prrh",
-  password="parsa1981",
-)
 
 #get all users data
 def user_get_data(db, username, password) :
