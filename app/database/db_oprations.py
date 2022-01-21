@@ -5,7 +5,7 @@ from hashlib import md5
 def user_get_data(db, username, password) :
     cur = db.cursor()
     password = md5(password.encode('utf8')).hexdigest()
-    cur.execute(f'SELECT `username`, `full_name`, `phone_number`, `age`, `bio`, `privacy_status`  FROM `users` WHERE `username` = "{username}" AND `password` = "{password}" ')
+    cur.execute(f'SELECT `username`, `full_name`, `email`, `phone_number`, `age`, `bio`, `privacy_status` FROM `users` WHERE `username` = "{username}" AND `password` = "{password}" ')
     res = cur.fetchall()
     return res
 
