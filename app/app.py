@@ -45,7 +45,12 @@ def profile() :
                 'password' : request.form.get('password', None),
             }
 
-        db.user_add(conn, new_user)
+        try :
+            db.user_add(conn, new_user)
+        except :
+            context['error'] = 1
+            return render_template("register.html", context=context)
+
 
         del new_user['password']
         context['user'] = User(new_user, conn)

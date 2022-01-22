@@ -6,8 +6,9 @@
     <meta name="description" content="Login - Register Template">
     <meta name="author" content="Lorenzo Angelino aka MrLolok">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css')}}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/login_register.css')}}">
     <style>
         body {
             background-color: #303641;
@@ -20,6 +21,12 @@
         <div id="title">
             <i class="material-icons lock">lock</i> Register
         </div>
+
+        {% if context.error %}
+        <div id="title">
+            username is taken
+        </div>
+        {% endif %}
 
         <form action="profile" method="post">
 
