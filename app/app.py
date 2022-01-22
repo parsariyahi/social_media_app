@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-from objects.User import User
+from objects.User import User #our user class
 import mysql.connector
-import database.db_oprations as db
+import database.db_oprations as db #some db oprations that are general
 
 #our mysql connection
 conn = mysql.connector.connect(
@@ -15,6 +15,7 @@ conn = mysql.connector.connect(
 app = Flask(__name__)
 
 
+#our index page and login page are the same
 @app.route("/")
 @app.route("/login")
 def index() :
@@ -24,7 +25,6 @@ def index() :
             }
     return render_template("login.html", context=context)
 
-
 @app.route("/register")
 def register() :
     context = {}
@@ -33,6 +33,7 @@ def register() :
 @app.route("/profile", methods=["GET","POST"])
 def profile() :
     context = {}
+    #check if user is registering or logining
     if request.form.get('register', None) and not request.form.get('login', None) :
         new_user = {
                 'username' : request.form.get('username', None),
@@ -45,6 +46,7 @@ def profile() :
                 'password' : request.form.get('password', None),
             }
 
+        #if user is not found this will set a error and return user to register.html
         try :
             db.user_add(conn, new_user)
         except :
@@ -52,8 +54,10 @@ def profile() :
             return render_template("register.html", context=context)
 
 
+        #delete password from new_user var and make a object from User class
         del new_user['password']
         context['user'] = User(new_user, conn)
+
         return render_template("profile/main.html", context=context)
 
     if request.form.get('login', None) and not request.form.get('register', None) :
@@ -62,6 +66,7 @@ def profile() :
 
         user = db.user_get_data(conn, username, password)
 
+        #if user is found fetch its data and return the profile 
         if user :
             user = {
                 'username' : user[0][0],
@@ -73,11 +78,12 @@ def profile() :
                 'privacy_status' : user[0][5],
             }
             context['user'] = User(user, conn)
-            #context['user'] = user
             return render_template("profile/main.html", context=context)
 
+        #this will send an error (get method) to login page if user was not found
         return redirect(url_for('index', error=1))
 
+    #if user try to open profile page directly this will return user to login page
     return render_template("login.html", context=context)
 
 if __name__ == "__main__" :
