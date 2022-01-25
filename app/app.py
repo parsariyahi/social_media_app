@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from objects.User import User #our user class
 import mysql.connector
+from objects.User import User #our user class
 import database.db_oprations as db #some db oprations that are general
 
 #our mysql connection
@@ -11,6 +11,14 @@ conn = mysql.connector.connect(
   password="parsa1981",
 )
 
+"""
+if we have error in our opration 
+we will pass that error with get method 
+this function will get the error code
+"""
+def get_error() :
+    return int(request.args.get('error', 0))
+
 
 app = Flask(__name__)
 
@@ -19,15 +27,12 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/login")
 def index() :
-    error = int(request.args.get('error', 0))
-    context = {
-            'error' : error
-            }
+    context = { 'error' : get_error() }
     return render_template("login.html", context=context)
 
 @app.route("/register")
 def register() :
-    context = {}
+    context = { 'error' : get_error() }
     return render_template("register.html", context=context)
 
 @app.route("/profile", methods=["GET","POST"])
@@ -46,12 +51,15 @@ def profile() :
                 'password' : request.form.get('password', None),
             }
 
-        #if user is not found this will set a error and return user to register.html
+        """
+        if user can not register
+        this will redirect user to register page
+        with an error code in get method
+        """
         try :
             db.user_add(conn, new_user)
         except :
-            context['error'] = 1
-            return render_template("register.html", context=context)
+            return redirect(url_for('register', error=1))
 
 
         #delete password from new_user var and make a object from User class
@@ -75,16 +83,25 @@ def profile() :
                 'phone_number' : user[0][3],
                 'age' : user[0][4],
                 'bio' : user[0][5],
-                'privacy_status' : user[0][5],
+                'privacy_status' : user[0][6],
             }
+            """
+            context['user'] is an object of User class
+            we send object itself to profile/main.html
+            so we can do user oprations easier
+            """
             context['user'] = User(user, conn)
             return render_template("profile/main.html", context=context)
 
-        #this will send an error (get method) to login page if user was not found
+        """
+        if user was not found
+        this will redirect user with an error code with get method
+        """
         return redirect(url_for('index', error=1))
 
     #if user try to open profile page directly this will return user to login page
     return render_template("login.html", context=context)
 
 if __name__ == "__main__" :
+    app.debug = True
     app.run()
