@@ -86,22 +86,22 @@ class User :
 
     def messages_get(self) :
         cur = self.db.cursor()
-        cur.execute(f'SELECT `from`, `content` FROM `messages` WHERE `to` = "{self.username}" AND `status` = 0')
+        cur.execute(f'SELECT `from`, `text` FROM `messages` WHERE `to` = "{self.username}" AND `status` = 0')
         res = cur.fetchall()
         return res
 
 
 #send a messege to someone
-    def messege_send(self, to, text) :
+    def messege_send(self, to, title, text) :
         cur = self.db.cursor()
-        cur.execute(f'INSERT INTO `messages` VALUES (0, "{self.username}", "{to}", "{text}", 0)')
+        cur.execute(f'INSERT INTO `messages` VALUES (0, "{self.username}", "{to}", "{title}", "{text}", 0)')
         self.db.commit()
 
 
 # select some users randomly
     def user_random_pick(self, count) :
         cur = self.db.cursor()
-        cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio`, `privacy_status` from users, vertices where users.privacy_status=0 and vertices.from!="{self.username}" and vertices.to!=users.username order by rand() limit {count} ')
+        cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio`, `privacy_status` from users left join vertices on vertices.from!="{self.username}" and vertices.to!=users.username  where users.privacy_status=0 order by rand() limit {count} ')
         res = cur.fetchall()
         return res
 

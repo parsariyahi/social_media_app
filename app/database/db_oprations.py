@@ -17,15 +17,15 @@ def user_add(db, user_data:dict) :
         return False
         #TODO raise an error here
     full_name = user_data.get('full_name', None)
-    age = user_data.get('age', None)
     email = user_data.get('email', None)
     phone_number = user_data.get('phone_number', None)
+    age = int(user_data.get('age', None))
     bio = user_data.get('bio', None)
-    privacy_status = user_data.get('privacy_status', None)
+    privacy_status = int(user_data.get('privacy_status', None))
     password = user_data.get('password') 
     password = md5(password.encode('utf8')).hexdigest()
 
-    cur.execute(f'INSERT INTO `users` VALUES (0, "{username}", "{full_name}", "{age}", "{email}", "{phone_number}", "{bio}", "{privacy_status}", "{password}") ')
+    cur.execute(f'INSERT INTO `users` VALUES (0, "{username}", "{full_name}", "{email}", "{phone_number}", {age}, "{bio}", {privacy_status}, "{password}") ')
     db.commit()
 
 #data = {
