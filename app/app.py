@@ -4,11 +4,17 @@ from objects.User import User #our user class
 import database.db_oprations as db #some db oprations that are general
 
 #our mysql connection
+# conn = mysql.connector.connect(
+#    host="localhost",
+#    database="pars_messenger",
+#    user="prrh",
+#    password="parsa1981",
+# )
 conn = mysql.connector.connect(
-   host="localhost",
-   database="pars_messenger",
-   user="prrh",
-   password="parsa1981",
+  host="sql6.freemysqlhosting.net",
+  database="sql6468524",
+  user="sql6468524",
+  password="4cdHtTfGr9",
 )
 
 
