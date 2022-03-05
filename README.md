@@ -9,7 +9,7 @@ this project is a personal student learning project
 
 
 ## written with 
-- [python](www.python.org)
-- [flask](flask.palletsprojects.com)
-- [nicepage](www.nicepage.com)
-- [mysql](www.mysql.com)
+- [python](https://www.python.org)
+- [flask](https://flask.palletsprojects.com)
+- [nicepage](https://www.nicepage.com)
+- [mysql](https://www.mysql.com)
