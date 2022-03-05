@@ -1,22 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
-from objects.User import User #our user class
-import database.db_oprations as db #some db oprations that are general
+from objects.User import User
+import database.db_oprations as db
 
-#our mysql connection
-# conn = mysql.connector.connect(
-#    host="localhost",
-#    database="pars_messenger",
-#    user="prrh",
-#    password="parsa1981",
-# )
 conn = mysql.connector.connect(
-  host="sql6.freemysqlhosting.net",
-  database="sql6468524",
-  user="sql6468524",
-  password="4cdHtTfGr9",
+   host="localhost",
+   database="pars_messenger",
+   user="root",
+   password="",
 )
-
 
 
 """
@@ -31,7 +23,9 @@ def get_error() :
 app = Flask(__name__)
 
 
-#our index page and login page are the same
+"""
+our index page and login page are the same
+"""
 @app.route("/")
 @app.route("/login")
 def index() :
@@ -46,7 +40,11 @@ def register() :
 @app.route("/profile", methods=["GET","POST"])
 def profile() :
     context = {}
-    #check if user is registering or logining
+    
+    """
+    check if user is registering or logining
+    """
+
     if request.form.get('register', None) and not request.form.get('login', None) :
         new_user = {
                 'username' : request.form.get('username', None),
@@ -70,11 +68,14 @@ def profile() :
             return redirect(url_for('register', error=1))
 
 
-        #delete password from new_user var and make a object from User class
+        """
+        delete password from new_user var and make a object from User class
+        """
+
         del new_user['password']
         context['user'] = User(new_user, conn)
 
-        return render_template("profile/main.html", context=context)
+        return render_template("profile/index.html", context=context)
 
     if request.form.get('login', None) and not request.form.get('register', None) :
         username = request.form.get('username', None)
@@ -82,7 +83,6 @@ def profile() :
 
         user = db.user_get_data(conn, username, password)
 
-        #if user is found fetch its data and return the profile 
         if user :
             user = {
                 'username' : user[0][0],
@@ -93,13 +93,15 @@ def profile() :
                 'bio' : user[0][5],
                 'privacy_status' : user[0][6],
             }
+
             """
             context['user'] is an object of User class
             we send object itself to profile/main.html
             so we can do user oprations easier
             """
+
             context['user'] = User(user, conn)
-            return render_template("profile/main.html", context=context)
+            return render_template("profile/index.html", context=context)
 
         """
         if user was not found
@@ -107,7 +109,6 @@ def profile() :
         """
         return redirect(url_for('index', error=1))
 
-    #if user try to open profile page directly this will return user to login page
     return render_template("login.html", context=context)
 
 if __name__ == "__main__" :
