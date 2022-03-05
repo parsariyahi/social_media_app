@@ -3,12 +3,19 @@ import mysql.connector
 from objects.User import User
 import database.db_oprations as db
 
+
+HOST = 'localhost'
+DATABASE = 'pars_messenger'
+USER = 'prrh'
+PASSWORD = 'parsa1981'
+
 conn = mysql.connector.connect(
-   host="localhost",
-   database="pars_messenger",
-   user="root",
-   password="",
+   host=HOST,
+   database=DATABASE,
+   user=USER,
+   password=PASSWORD,
 )
+
 
 
 """
