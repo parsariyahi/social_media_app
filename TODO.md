@@ -1,6 +1,8 @@
 # TODO
 
 - [ ]  add session for controling if a user is logged in or not
-- [ ]  define front-end functions
+- [x]  define front-end functions
+- [ ]  create send message part
 - [ ]  use flask authorization
 - [ ]  release a MVP
+

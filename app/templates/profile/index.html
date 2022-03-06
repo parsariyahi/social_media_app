@@ -112,6 +112,9 @@
       </div>
     </section>
 
+
+
+
 <!--        member suggestion section        -->
     <section class="u-clearfix u-section-2" id="sec-ae54">
       <div class="u-clearfix u-sheet u-sheet-1">
@@ -122,46 +125,32 @@
         </h1>
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1">
-            <div class="u-align-center u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-container-layout-1">
-                <div alt="" class="u-image u-image-circle u-image-1" src="" data-image-width="500" data-image-height="500"></div>
-                <h5 class="u-text u-text-2">parsariyahi</h5>
-                <p class="u-text u-text-3">parsa riyahi</p>
-                <p class="u-text u-text-4">18</p>
-                <p class="u-text u-text-5">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-6">09092389042490283498</p>
-                <p class="u-text u-text-7">pfhjdsajflk@jflkadjsf.com</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-1">Follow</a>
-              </div>
-            </div>
-            <div class="u-align-center u-container-style u-list-item u-repeater-item">
+
+
+<!--        each member suggestion section container        -->
+{%for user in context.user.user_recomendation(3)%}
+           <div class="u-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-2">
                 <div alt="" class="u-image u-image-circle u-image-2" src="" data-image-width="500" data-image-height="500"></div>
-                <h5 class="u-text u-text-8">Nat Reynolds</h5>
-                <p class="u-text u-text-9">Accountant-auditor</p>
-                <p class="u-text u-text-10">parsa riyahi</p>
-                <p class="u-text u-text-11">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-12">parsa riyahi</p>
-                <p class="u-text u-text-13">09092389042490283498</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-2">Button</a>
+                <h5 class="u-text u-text-8">{{user.username}}</h5>
+                <p class="u-text u-text-9">{{user.full_name}}</p>
+                <p class="u-text u-text-10">{{user.age}}</p>
+                <p class="u-text u-text-11">{{user.bio}}</p>
+                <p class="u-text u-text-12">{{user.email}}</p>
+                <p class="u-text u-text-13">{{user.phone_number}}</p>
+                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-2">Follow</a>
               </div>
             </div>
-            <div class="u-align-center u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-container-layout-3">
-                <div alt="" class="u-image u-image-circle u-image-3" src="" data-image-width="500" data-image-height="500"></div>
-                <h5 class="u-text u-text-14">Betty Nilson</h5>
-                <p class="u-text u-text-15">Chief Accountant</p>
-                <p class="u-text u-text-16">parsa riyahi</p>
-                <p class="u-text u-text-17">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-18">parsa riyahi</p>
-                <p class="u-text u-text-19">09092389042490283498</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-3">Button</a>
-              </div>
-            </div>
+{%endfor%}
+<!--        each member suggestion section container        -->
           </div>
         </div>
       </div>
     </section>
+<!--        member suggestion section        -->
+
+
+
 
 
 <!--        your requests section        -->
@@ -174,49 +163,34 @@
         </h1>
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1">
+
+
+
+<!--        each request section container        -->
+{%for user in context.user.friend_request_get() %}
             <div class="u-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-1">
                 <div alt="" class="u-image u-image-circle u-image-1" src="" data-image-width="500" data-image-height="500"></div>
-                <h5 class="u-text u-text-2">parsariyahi</h5>
-                <p class="u-text u-text-3">parsa riyahi</p>
-                <p class="u-text u-text-4">18</p>
-                <p class="u-text u-text-5">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-6">09092389042490283498</p>
-                <p class="u-text u-text-7">pfhjdsajflk@jflkadjsf.com</p>
+                <h5 class="u-text u-text-2">{{user.username}}</h5>
+                <p class="u-text u-text-3">{{user.full_name}}</p>
+                <p class="u-text u-text-4">{{user.age}}</p>
+                <p class="u-text u-text-5">{{user.bio}}</p>
+                <p class="u-text u-text-6">{{user.phone_number}}</p>
+                <p class="u-text u-text-7">{{user.email}}</p>
                 <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-1">accept</a>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-4 u-hover-custom-color-2 u-radius-50 u-text-hover-white u-text-white u-btn-2">accept</a>
+                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-4 u-hover-custom-color-2 u-radius-50 u-text-hover-white u-text-white u-btn-2">reject</a>
               </div>
             </div>
-            <div class="u-align-center u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-container-layout-2">
-                <div alt="" class="u-image u-image-circle u-image-2" src="" data-image-width="500" data-image-height="500"></div>
-                <h5 class="u-text u-text-8">Nat Reynolds</h5>
-                <p class="u-text u-text-9">Accountant-auditor</p>
-                <p class="u-text u-text-10">parsa riyahi</p>
-                <p class="u-text u-text-11">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-12">parsa riyahi</p>
-                <p class="u-text u-text-13">09092389042490283498</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-3">Button</a>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-4 u-hover-custom-color-2 u-radius-50 u-text-hover-white u-text-white u-btn-4">accept</a>
-              </div>
-            </div>
-            <div class="u-align-center u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-container-layout-3">
-                <div alt="" class="u-image u-image-circle u-image-3" src="" data-image-width="500" data-image-height="500"></div>
-                <h5 class="u-text u-text-14">Betty Nilson</h5>
-                <p class="u-text u-text-15">Chief Accountant</p>
-                <p class="u-text u-text-16">parsa riyahi</p>
-                <p class="u-text u-text-17">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-18">parsa riyahi</p>
-                <p class="u-text u-text-19">09092389042490283498</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-5">Button</a>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-4 u-hover-custom-color-2 u-radius-50 u-text-hover-white u-text-white u-btn-6">accept</a>
-              </div>
-            </div>
+{%endfor%}
+<!--        each request section container        -->
           </div>
         </div>
       </div>
     </section>
+
+
+
+
 
 
 <!--        your messages section        -->
@@ -230,37 +204,30 @@
         </h1>
         <div class="u-expanded-width u-layout-grid u-list u-list-1">
           <div class="u-repeater u-repeater-1">
+
+<!--        each message section container        -->
+{%for message in context.user.message_get()%}
             <div class="u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-1">
-                <h2 class="u-text u-text-default u-text-2">Hello my frdijfsa </h2>
-                <p class="u-text u-text-3">Sample text. Click to select the text box. Click again or double click to start editing the text.dafffffffffffffffffffffffffffffffffffffffffffffffffffsfadfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdsaffffffffffffffffffffffffffffffffffff</p>
-                <p class="u-text u-text-4">parsariyahikasdf</p>
+                <h2 class="u-text u-text-default u-text-2"> {{message.title}} </h2>
+                <br>
+                <br>
+                <p class="u-text u-text-3"> {{message.content}} </p>
+                <p class="u-text u-text-4"> {{message.from}} </p>
                 <h6 class="u-text u-text-default u-text-5">from :</h6>
-                <a href="https://nicepage.com/k/auto-mechanic-html-templates" class="u-border-none u-btn u-button-style u-gradient u-none u-text-body-alt-color u-btn-1">read</a>
               </div>
             </div>
-            <div class="u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-container-layout-2">
-                <h2 class="u-text u-text-default u-text-6">Sample Headline</h2>
-                <p class="u-text u-text-7">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-8">lkjddasf</p>
-                <h6 class="u-text u-text-default u-text-9">from :</h6>
-                <a href="https://nicepage.com/k/auto-mechanic-html-templates" class="u-border-none u-btn u-button-style u-gradient u-none u-text-body-alt-color u-btn-2">read</a>
-              </div>
-            </div>
-            <div class="u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-container-layout-3">
-                <h2 class="u-text u-text-default u-text-10">Sample Headline</h2>
-                <p class="u-text u-text-11">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                <p class="u-text u-text-12">dafafasfdasf</p>
-                <h6 class="u-text u-text-default u-text-13">from :</h6>
-                <a href="https://nicepage.com/k/auto-mechanic-html-templates" class="u-border-none u-btn u-button-style u-gradient u-none u-text-body-alt-color u-btn-3">read</a>
-              </div>
-            </div>
-          </div>
+{%endfor%}
+<!--        each message section container        -->
+</div>
         </div>
       </div>
     </section>
+<!--        your messages section        -->
+
+
+
+
 
 
 <!--        send message section        -->
@@ -271,7 +238,16 @@
 	c-0.777-3.291-0.424-5.119-0.424-5.119C0.734,8.179,5.936,2,13.159,2C18.522,2,22.832,5.343,24.85,10.126z"></path><path style="fill:#ED7161;" d="M6,18.078c-0.553,0-1-0.447-1-1c0-5.514,4.486-10,10-10c0.553,0,1,0.447,1,1s-0.447,1-1,1
 	c-4.411,0-8,3.589-8,8C7,17.631,6.553,18.078,6,18.078z"></path></svg><img></span>&nbsp;Send Messages
         </h1>
-        <div alt="" class="u-image u-image-circle u-image-1" data-image-width="225" data-image-height="225"></div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
         <div class="u-form u-form-1">
           <form action="#" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" source="custom" name="form" style="padding: 16px;">
             <div class="u-form-group u-form-name">
@@ -316,10 +292,12 @@ c0-7.4,3.4-18.8,18.8-18.8h13.8v15.4H75.5z"></path></svg></span>
         </div>
       </div>
     </section>
+<!--        footer section        -->
 
 
 
 <!--        named the source        -->
+
     <section class="u-backlink u-clearfix u-grey-80">
       <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
         <span>Website Templates</span>
@@ -333,4 +311,6 @@ c0-7.4,3.4-18.8,18.8-18.8h13.8v15.4H75.5z"></path></svg></span>
     </section>
 
   </body>
+
+  
 </html>
