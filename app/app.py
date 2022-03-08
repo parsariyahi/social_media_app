@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
 from objects.User import User
 import database.db_oprations as db
@@ -28,10 +28,10 @@ def get_error() :
 
 
 app = Flask(__name__)
-
+app.secret_key = '3PVj9PQam6'
 
 """
-our index page and login page are the same
+index page and login page are the same
 """
 @app.route("/")
 @app.route("/login")
@@ -81,6 +81,7 @@ def profile() :
 
         del new_user['password']
         context['user'] = User(new_user, conn)
+        session['username'] = new_user['username']
 
         return render_template("profile/index.html", context=context)
 
@@ -108,6 +109,8 @@ def profile() :
             """
 
             context['user'] = User(user, conn)
+            session['username'] = context['user']
+
             return render_template("profile/index.html", context=context)
 
         """
@@ -117,6 +120,26 @@ def profile() :
         return redirect(url_for('index', error=1))
 
     return render_template("login.html", context=context)
+
+
+@app.route("/msg/send", methods=['GET', 'POST'])
+def msg_send() :
+    if request.form.get('msg_send', None) :
+        user = session.get('username', None)
+        if user :
+            to = request.form.get('username', None)
+            title = request.form.get('title', None)
+            message = request.form.get('message', None)
+
+            if to and title and message :
+                user.message_send(to, title, message)
+                context = { 'user' : user }
+
+                render_template("profile/index.html", context=context)
+
+    render_template("login.html", context = {})
+    
+
 
 if __name__ == "__main__" :
     app.debug = True
