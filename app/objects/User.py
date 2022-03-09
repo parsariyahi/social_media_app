@@ -76,12 +76,22 @@ class User :
         cur.execute(f'UPDATE `friend_requests` SET `status` = 2 WHERE `from` = "{self.username}" AND `to` = "{to}" ')
         self.db.commit()
 
-    def friend_request_get(self) :
-        cur = self.db.cursor()
-        cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from friend_requests join users where friend_requests.from = users.username and friend_requests.to = "{self.username}" and friend_requests.status = 0')
-        res = cur.fetchall()
-        for user in self.__conver_users_db_form_to_dict(res) :
-            yield user
+    def friend_request_get(self, limit=0) :
+        result = []
+        if limit :
+            cur = self.db.cursor()
+            cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from friend_requests join users where friend_requests.from = users.username and friend_requests.to = "{self.username}" and friend_requests.status = 0 limit {limit}')
+            res = cur.fetchall()
+            for user in self.__conver_users_db_form_to_dict(res) :
+                result.append(user)
+        else :
+            cur = self.db.cursor()
+            cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from friend_requests join users where friend_requests.from = users.username and friend_requests.to = "{self.username}" and friend_requests.status = 0')
+            res = cur.fetchall()
+            for user in self.__conver_users_db_form_to_dict(res) :
+                result.append(user)
+
+        return  result
 
 #send a messege to someone
     def messege_send(self, to, title, text) :
@@ -90,22 +100,37 @@ class User :
         self.db.commit()
 
 
-    def message_get(self) :
-        cur = self.db.cursor()
-        cur.execute(f'SELECT `from`, `title`, `content` FROM `messages` WHERE `to` = "{self.username}" ')
-        res = cur.fetchall()
-        
-        for message in self.__convert_messages_db_form_to_dict(res) :
-            yield message
+    def message_get(self, limit=0) :
+        result = []
+        if limit :
+            cur = self.db.cursor()
+            cur.execute(f'SELECT `from`, `title`, `content` FROM `messages` WHERE `to` = "{self.username}" limit {limit}')
+            res = cur.fetchall()
+            
+            for message in self.__convert_messages_db_form_to_dict(res) :
+                result.append(message)
+
+        else :
+            cur = self.db.cursor()
+            cur.execute(f'SELECT `from`, `title`, `content` FROM `messages` WHERE `to` = "{self.username}" ')
+            res = cur.fetchall()
+            
+            for message in self.__convert_messages_db_form_to_dict(res) :
+                result.append(message)
+
+        return result
 
 
 
 # select some users (only public users) randomly for recomending to user
     def user_recomendation(self, count) :
+        result = []
         cur = self.db.cursor()
         cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from users left join vertices on vertices.from!="{self.username}" and vertices.to!=users.username  where users.privacy_status=1 order by rand() limit {count} ')
         res = cur.fetchall()
 
         for user in self.__conver_users_db_form_to_dict(res) :
-            yield user
+            result.append(user)
+
+        return result
 

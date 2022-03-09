@@ -46,8 +46,6 @@ def register() :
 
 @app.route("/profile", methods=["GET","POST"])
 def profile() :
-    context = {}
-    
     """
     check if user is registering or logining
     """
@@ -78,12 +76,19 @@ def profile() :
         """
         delete password from new_user var and make a object from User class
         """
-
         del new_user['password']
-        context['user'] = User(new_user, conn)
-        session['username'] = new_user['username']
+        user = User(new_user, conn)
 
-        return render_template("profile/index.html", context=context)
+        session['user'] = new_user
+
+        context = {
+            'recomendation' : user.user_recomendation(3),
+            'requests' : user.friend_request_get(3),
+            'messages' : user.message_get(3),
+        }
+
+        #return render_template("profile/index.html", context=context)
+        return context
 
     if request.form.get('login', None) and not request.form.get('register', None) :
         username = request.form.get('username', None)
@@ -102,16 +107,17 @@ def profile() :
                 'privacy_status' : user[0][6],
             }
 
-            """
-            context['user'] is an object of User class
-            we send object itself to profile/main.html
-            so we can do user oprations easier
-            """
+            session['user'] = user
+            user = User(user, conn)
 
-            context['user'] = User(user, conn)
-            session['username'] = context['user']
+            context = {
+                'recomendation' : user.user_recomendation(3),
+                'requests' : user.friend_request_get(3),
+                'messages' : user.message_get(3),
+                }
 
-            return render_template("profile/index.html", context=context)
+            #return render_template("profile/index.html", context=context)
+            return context
 
         """
         if user was not found
