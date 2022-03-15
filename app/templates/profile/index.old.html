@@ -61,10 +61,10 @@
                   <span class="u-text-custom-color-2">public</span>
                   <span class="u-text-custom-color-2"></span>
                 </p>
-                <h2 class="u-align-center u-text u-text-default u-text-4">{{session['user']['username']}}</h2>
-                <h3 class="u-align-center u-text u-text-5">{{session['user']['full_name']}}</h3>
-                <p class="u-align-left u-text u-text-6"> {{session['user']['bio']}}
-                   <br> 
+                <h2 class="u-align-center u-text u-text-default u-text-4">parsariyahi</h2>
+                <h3 class="u-align-center u-text u-text-5">parsa riyahi</h3>
+                <p class="u-align-left u-text u-text-6">lorem afkjadslkfjkjk jflkdajskfjakfjdlkj kjlkfjdslkfjlkjfsakj lkjflkdsajfakjlkj kjflkjalkfjakjfkj kajsfkdsaf<br>lkfjdlsakjflksajflkjfkjlkj lkjsdflkjlkjkljlkjjdsflkjlkkjlkdjflkjsflkjfdslkjlkjkfjsd kjkjjsdfkjdslkfjsakfksajf<br>
+                  <br>
                 </p>
                 <p class="u-align-left u-text u-text-7"><span class="u-icon u-icon-3"><svg class="u-svg-content" viewBox="0 0 60 60" x="0px" y="0px" style="width: 1em; height: 1em;"><g><path d="M56.612,4.569c-0.391-0.391-1.023-0.391-1.414,0s-0.391,1.023,0,1.414c3.736,3.736,3.736,9.815,0,13.552
 		c-0.391,0.391-0.391,1.023,0,1.414c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293
@@ -78,7 +78,7 @@
 		V4.405C47,1.977,45.024,0,42.595,0z M33,3h1c0.552,0,1,0.447,1,1s-0.448,1-1,1h-1c-0.552,0-1-0.447-1-1S32.448,3,33,3z M26,3h4
 		c0.552,0,1,0.447,1,1s-0.448,1-1,1h-4c-0.552,0-1-0.447-1-1S25.448,3,26,3z M30,57c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4
 		S32.206,57,30,57z M45,46H15V8h30V46z"></path>
-</g></svg><img></span>&nbsp;{{session['user']['phone_number']}}
+</g></svg><img></span>&nbsp;09094293049209
                 </p>
                 <p class="u-align-right u-text u-text-8"><span class="u-icon u-icon-4"><svg class="u-svg-content" viewBox="0 0 55 55" x="0px" y="0px" style="width: 1em; height: 1em;"><path d="M55,27.5C55,12.337,42.663,0,27.5,0S0,12.337,0,27.5c0,8.009,3.444,15.228,8.926,20.258l-0.026,0.023l0.892,0.752
 	c0.058,0.049,0.121,0.089,0.179,0.137c0.474,0.393,0.965,0.766,1.465,1.127c0.162,0.117,0.324,0.234,0.489,0.348
@@ -95,7 +95,7 @@
 	c0-0.867-0.318-1.708-0.887-2.369v-4.667c0.052-0.52,0.236-3.448-1.883-5.864C34.524,9.065,31.541,8,27.5,8
 	s-7.024,1.065-8.867,3.168c-2.119,2.416-1.935,5.346-1.883,5.864v4.667c-0.568,0.661-0.887,1.502-0.887,2.369v3.545
 	c0,1.101,0.494,2.128,1.34,2.821c0.81,3.173,2.477,5.575,3.093,6.389v2.894c0,0.816-0.445,1.566-1.162,1.958l-7.907,4.313
-	c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path></svg><img></span>&nbsp;{{session['user']['email']}}
+	c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path></svg><img></span>&nbsp;arsa@gdfdsfsafffdmial.com
                 </p>
               </div>
             </div>
@@ -128,7 +128,7 @@
 
 
 <!--        each member suggestion section container        -->
-{%for user in context.recomendation%}
+{%for user in context.user.user_recomendation(3)%}
            <div class="u-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-2">
                 <div alt="" class="u-image u-image-circle u-image-2" src="" data-image-width="500" data-image-height="500"></div>
@@ -167,7 +167,7 @@
 
 
 <!--        each request section container        -->
-{%for user in context.requests %}
+{%for user in context.user.friend_request_get() %}
             <div class="u-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-1">
                 <div alt="" class="u-image u-image-circle u-image-1" src="" data-image-width="500" data-image-height="500"></div>
@@ -206,7 +206,7 @@
           <div class="u-repeater u-repeater-1">
 
 <!--        each message section container        -->
-{%for message in context.messages%}
+{%for message in context.user.message_get()%}
             <div class="u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-1">
                 <h2 class="u-text u-text-default u-text-2"> {{message.title}} </h2>

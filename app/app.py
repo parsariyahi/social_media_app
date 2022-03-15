@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
+
 from objects.User import User
 import database.db_oprations as db
 
@@ -18,12 +19,11 @@ conn = mysql.connector.connect(
 
 
 
-"""
-if we have error in our opration 
-we will pass that error with get method 
-this function will get the error code
-"""
 def get_error() :
+    """ If we have error in our opration 
+    we will pass that error with get method 
+    this function will get the error code
+    """
     return int(request.args.get('error', 0))
 
 
@@ -79,6 +79,9 @@ def profile() :
         del new_user['password']
         user = User(new_user, conn)
 
+        """
+        in session we store the user information without password
+        """
         session['user'] = new_user
 
         context = {
@@ -87,8 +90,7 @@ def profile() :
             'messages' : user.message_get(3),
         }
 
-        #return render_template("profile/index.html", context=context)
-        return context
+        return render_template("profile/index.html", context=context)
 
     if request.form.get('login', None) and not request.form.get('register', None) :
         username = request.form.get('username', None)
@@ -116,8 +118,7 @@ def profile() :
                 'messages' : user.message_get(3),
                 }
 
-            #return render_template("profile/index.html", context=context)
-            return context
+            return render_template("profile/index.html", context=context)
 
         """
         if user was not found
@@ -125,25 +126,28 @@ def profile() :
         """
         return redirect(url_for('index', error=1))
 
+    """
+    the 5 is a code number for ' user not found '
+    """
+    context = {'error': 5}
     return render_template("login.html", context=context)
 
 
-@app.route("/msg/send", methods=['GET', 'POST'])
+@app.route("/msg/send", methods=['POST'])
 def msg_send() :
     if request.form.get('msg_send', None) :
-        user = session.get('username', None)
+        user = session.get('user', None)
         if user :
             to = request.form.get('username', None)
             title = request.form.get('title', None)
             message = request.form.get('message', None)
 
             if to and title and message :
-                user.message_send(to, title, message)
-                context = { 'user' : user }
+                db.send_message(conn, user['username'], to, title, message)
+                
+                return render_template("profile/index.html", context=context)
 
-                render_template("profile/index.html", context=context)
-
-    render_template("login.html", context = {})
+    return render_template("login.html", context = {})
     
 
 
