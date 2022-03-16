@@ -2,10 +2,16 @@ from hashlib import md5
 
 
 #get all users data
-def user_get_data(db, username: str, password: str) :
+def user_login(db, username: str, password: str) :
     cur = db.cursor()
     password = md5(password.encode('utf8')).hexdigest()
     cur.execute(f'SELECT `username`, `full_name`, `email`, `phone_number`, `age`, `bio`, `privacy_status` FROM `users` WHERE `username` = "{username}" AND `password` = "{password}" ')
+    res = cur.fetchall()
+    return res
+
+def user_get_data(db, username: str) :
+    cur = db.cursor()
+    cur.execute(f'SELECT `username`, `full_name`, `email`, `phone_number`, `age`, `bio`, `privacy_status` FROM `users` WHERE `username` = "{username}" ')
     res = cur.fetchall()
     return res
 

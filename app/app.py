@@ -18,6 +18,16 @@ conn = mysql.connector.connect(
 )
 
 
+def set_context_profile(user: User) -> dict :
+    """ This is just for Dont repeat your self 
+    and its not a primary function
+    """
+    return {
+        'recomendation' : user.user_recomendation(3),
+        'requests' : user.friend_request_get(3),
+        'messages' : user.message_get(3),
+    }
+
 
 def get_error() :
     """ If we have error in our opration 
@@ -84,19 +94,15 @@ def profile() :
         """
         session['user'] = new_user
 
-        context = {
-            'recomendation' : user.user_recomendation(3),
-            'requests' : user.friend_request_get(3),
-            'messages' : user.message_get(3),
-        }
+        context = set_context_profile(user)
 
         return render_template("profile/index.html", context=context)
 
     if request.form.get('login', None) and not request.form.get('register', None) :
-        username = request.form.get('username', None)
-        password = request.form.get('password', None)
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
 
-        user = db.user_get_data(conn, username, password)
+        user = db.user_login(conn, username, password)
 
         if user :
             user = {
@@ -112,11 +118,7 @@ def profile() :
             session['user'] = user
             user = User(user, conn)
 
-            context = {
-                'recomendation' : user.user_recomendation(3),
-                'requests' : user.friend_request_get(3),
-                'messages' : user.message_get(3),
-                }
+            context = set_context_profile(user)
 
             return render_template("profile/index.html", context=context)
 
@@ -144,11 +146,13 @@ def msg_send() :
 
             if to and title and message :
                 db.send_message(conn, user['username'], to, title, message)
-                
+                user = User(session['user'], conn)
+                context = set_context_profile(user)
+
                 return render_template("profile/index.html", context=context)
 
     return render_template("login.html", context = {})
-    
+
 
 
 if __name__ == "__main__" :
