@@ -41,6 +41,30 @@ def send_message(db, from_: str, to: str, title: str, message: str) -> None:
     cur.execute(f'INSERT INTO `messages` VALUES (0, "{from_}", "{to}", "{title}", "{message}") ')
     db.commit()
 
+
+
+#craete a vertex and update the friend_request status to 1 -> means that is accepted
+def friend_request_accept(db, from_, to) :
+    cur = db.cursor()
+    cur.execute(f'UPDATE `friend_requests` SET `status` = 1 WHERE `from` = "{from_}" AND `to` = "{to}" ')
+    db.commit()
+
+    cur = db.cursor()
+    cur.execute(f'INSERT INTO `vertices` VALUES (0, "{from_}", "{to}")')
+    db.commit()
+
+#update the friend_request status to 2 -> means a request that is rejected
+def friend_request_reject(db, from_, to) :
+    cur = db.cursor()
+    cur.execute(f'UPDATE `friend_requests` SET `status` = 2 WHERE `from` = "{from_}" AND `to` = "{to}" ')
+    db.commit()
+
+
+def friend_request_send(db, from_, to) :
+    cur = db.cursor()
+    cur.execute(f'INSERT INTO `friend_requests` VALUES (0, "{from_}", "{to}", 0)')
+    db.commit()
+
 #data = {
 #        "username" : "mmd",
 #        "full_name" : "mmd por",

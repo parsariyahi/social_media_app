@@ -26,6 +26,8 @@ def set_context_profile(user: User) -> dict :
         'recomendation' : user.user_recomendation(3),
         'requests' : user.friend_request_get(3),
         'messages' : user.message_get(3),
+        'following_count': user.friend_following_count(),
+        'follower_count': user.friend_follower_count(),
     }
 
 
@@ -56,10 +58,15 @@ def register() :
 
 @app.route("/profile", methods=["GET","POST"])
 def profile() :
+
+    if session['user'] :
+        user = User(session['user'], conn)
+        context = set_context_profile(user)
+        return render_template("profile/index.html", context=context)
+    
     """
     check if user is registering or logining
     """
-
     if request.form.get('register', None) and not request.form.get('login', None) :
         new_user = {
                 'username' : request.form.get('username', None),
@@ -146,14 +153,35 @@ def msg_send() :
 
             if to and title and message :
                 db.send_message(conn, user['username'], to, title, message)
-                user = User(session['user'], conn)
-                context = set_context_profile(user)
 
-                return render_template("profile/index.html", context=context)
+                return redirect(url_for('profile'))
 
     return render_template("login.html", context = {})
 
 
+@app.route("/req/accept/", methods=['GET'])
+def request_accept() :
+    req_username = request.args.get('req_username', '')
+    if req_username :
+        db.friend_request_accept(conn, req_username, session['user']['username'])
+
+        return redirect(url_for('profile'))
+
+@app.route("/req/reject/", methods=['GET'])
+def request_reject() :
+    req_username = request.args.get('req_username', '')
+    if req_username :
+        db.friend_request_reject(conn, req_username, session['user']['username'])
+
+        return redirect(url_for('profile'))
+
+@app.route("/req/send/", methods=['GET'])
+def request_send() :
+    req_username = request.args.get('req_username', '')
+    if req_username :
+        db.friend_request_send(conn, session['user']['username'], req_username)
+
+        return redirect(url_for('profile'))
 
 if __name__ == "__main__" :
     app.debug = True

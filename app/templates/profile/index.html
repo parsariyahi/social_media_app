@@ -102,9 +102,9 @@
             <div class="u-container-style u-gradient u-layout-cell u-right-cell u-size-30 u-size-xs-60 u-layout-cell-2" src="">
               <div class="u-container-layout u-container-layout-2" src="">
                 <h1 class="u-text u-text-custom-color-1 u-text-default u-text-9">Followers</h1>
-                <h4 class="u-text u-text-default u-text-white u-text-10">25000</h4>
+                <h4 class="u-text u-text-default u-text-white u-text-10">{{context.follower_count}}</h4>
                 <h1 class="u-text u-text-default u-text-palette-1-dark-2 u-text-11">Followings</h1>
-                <h4 class="u-text u-text-default u-text-white u-text-12">25000</h4>
+                <h4 class="u-text u-text-default u-text-white u-text-12">{{context.following_count}}</h4>
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@
                 <p class="u-text u-text-11">{{user.bio}}</p>
                 <p class="u-text u-text-12">{{user.email}}</p>
                 <p class="u-text u-text-13">{{user.phone_number}}</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-2">Follow</a>
+                <a href="{{ url_for('request_send', req_username=user.username) }}" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-2">Follow</a>
               </div>
             </div>
 {%endfor%}
@@ -177,8 +177,8 @@
                 <p class="u-text u-text-5">{{user.bio}}</p>
                 <p class="u-text u-text-6">{{user.phone_number}}</p>
                 <p class="u-text u-text-7">{{user.email}}</p>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-1">accept</a>
-                <a href="https://nicepage.com/c/technology-html-templates" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-4 u-hover-custom-color-2 u-radius-50 u-text-hover-white u-text-white u-btn-2">reject</a>
+                <a href="{{ url_for('request_accept', req_username=user.username) }}" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-1 u-radius-50 u-text-hover-white u-text-white u-btn-1">accept</a>
+                <a href="{{ url_for('request_reject', req_username=user.username) }}" class="u-border-2 u-border-grey-5 u-btn u-btn-round u-button-style u-custom-color-4 u-hover-custom-color-2 u-radius-50 u-text-hover-white u-text-white u-btn-2">reject</a>
               </div>
             </div>
 {%endfor%}
