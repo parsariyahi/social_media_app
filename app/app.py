@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
+
 from objects.User import User
 import database.db_oprations as db
 
@@ -17,13 +18,22 @@ conn = mysql.connector.connect(
 )
 
 
+def set_context_profile(user: User) -> dict :
+    """ This is just for Dont repeat your self 
+    and its not a primary function
+    """
+    return {
+        'recomendation' : user.user_recomendation(3),
+        'requests' : user.friend_request_get(3),
+        'messages' : user.message_get(3),
+    }
 
-"""
-if we have error in our opration 
-we will pass that error with get method 
-this function will get the error code
-"""
+
 def get_error() :
+    """ If we have error in our opration 
+    we will pass that error with get method 
+    this function will get the error code
+    """
     return int(request.args.get('error', 0))
 
 
@@ -79,22 +89,20 @@ def profile() :
         del new_user['password']
         user = User(new_user, conn)
 
+        """
+        in session we store the user information without password
+        """
         session['user'] = new_user
 
-        context = {
-            'recomendation' : user.user_recomendation(3),
-            'requests' : user.friend_request_get(3),
-            'messages' : user.message_get(3),
-        }
+        context = set_context_profile(user)
 
-        #return render_template("profile/index.html", context=context)
-        return context
+        return render_template("profile/index.html", context=context)
 
     if request.form.get('login', None) and not request.form.get('register', None) :
-        username = request.form.get('username', None)
-        password = request.form.get('password', None)
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
 
-        user = db.user_get_data(conn, username, password)
+        user = db.user_login(conn, username, password)
 
         if user :
             user = {
@@ -110,14 +118,9 @@ def profile() :
             session['user'] = user
             user = User(user, conn)
 
-            context = {
-                'recomendation' : user.user_recomendation(3),
-                'requests' : user.friend_request_get(3),
-                'messages' : user.message_get(3),
-                }
+            context = set_context_profile(user)
 
-            #return render_template("profile/index.html", context=context)
-            return context
+            return render_template("profile/index.html", context=context)
 
         """
         if user was not found
@@ -125,26 +128,31 @@ def profile() :
         """
         return redirect(url_for('index', error=1))
 
+    """
+    the 5 is a code number for ' user not found '
+    """
+    context = {'error': 5}
     return render_template("login.html", context=context)
 
 
-@app.route("/msg/send", methods=['GET', 'POST'])
+@app.route("/msg/send", methods=['POST'])
 def msg_send() :
     if request.form.get('msg_send', None) :
-        user = session.get('username', None)
+        user = session.get('user', None)
         if user :
             to = request.form.get('username', None)
             title = request.form.get('title', None)
             message = request.form.get('message', None)
 
             if to and title and message :
-                user.message_send(to, title, message)
-                context = { 'user' : user }
+                db.send_message(conn, user['username'], to, title, message)
+                user = User(session['user'], conn)
+                context = set_context_profile(user)
 
-                render_template("profile/index.html", context=context)
+                return render_template("profile/index.html", context=context)
 
-    render_template("login.html", context = {})
-    
+    return render_template("login.html", context = {})
+
 
 
 if __name__ == "__main__" :
