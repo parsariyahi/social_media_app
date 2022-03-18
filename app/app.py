@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
 
-from objects.User import User
-import database.db_oprations as db
-
+from src import Db, User
 
 HOST = 'localhost'
 DATABASE = 'pars_messenger'
@@ -16,6 +14,8 @@ conn = mysql.connector.connect(
    user=USER,
    password=PASSWORD,
 )
+
+db = Db(conn)
 
 
 def set_context_profile(user: User) -> dict :
@@ -85,7 +85,7 @@ def profile() :
         with an error code in get method
         """
         try :
-            db.user_add(conn, new_user)
+            db.user_add(new_user)
         except :
             return redirect(url_for('register', error=1))
 
@@ -109,7 +109,7 @@ def profile() :
         username = request.form.get('username', '')
         password = request.form.get('password', '')
 
-        user = db.user_login(conn, username, password)
+        user = db.user_login(username, password)
 
         if user :
             user = {
@@ -152,7 +152,7 @@ def msg_send() :
             message = request.form.get('message', None)
 
             if to and title and message :
-                db.send_message(conn, user['username'], to, title, message)
+                db.send_message(user['username'], to, title, message)
 
                 return redirect(url_for('profile'))
 
@@ -163,7 +163,7 @@ def msg_send() :
 def request_accept() :
     req_username = request.args.get('req_username', '')
     if req_username :
-        db.friend_request_accept(conn, req_username, session['user']['username'])
+        db.friend_request_accept(req_username, session['user']['username'])
 
         return redirect(url_for('profile'))
 
@@ -171,7 +171,7 @@ def request_accept() :
 def request_reject() :
     req_username = request.args.get('req_username', '')
     if req_username :
-        db.friend_request_reject(conn, req_username, session['user']['username'])
+        db.friend_request_reject(req_username, session['user']['username'])
 
         return redirect(url_for('profile'))
 
@@ -179,7 +179,7 @@ def request_reject() :
 def request_send() :
     req_username = request.args.get('req_username', '')
     if req_username :
-        db.friend_request_send(conn, session['user']['username'], req_username)
+        db.friend_request_send(session['user']['username'], req_username)
 
         return redirect(url_for('profile'))
 
