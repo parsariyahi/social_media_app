@@ -1,9 +1,8 @@
 class User :
     __slots__ = ['db', 'username', 'full_name', 'age', 'email', 'phone_number', 'bio', 'privacy_status']
 
-
     @staticmethod
-    def __conver_users_db_form_to_dict(db_data) :
+    def __convert_users_db_form_to_dict(db_data) :
         for user in db_data :
             yield {
                 'username' : user[0],
@@ -14,7 +13,6 @@ class User :
                 'bio' : user[5],
             }
 
-
     @staticmethod
     def __convert_messages_db_form_to_dict(db_data) :
         for message in db_data :
@@ -22,14 +20,6 @@ class User :
                     'from' : message[0],
                     'title' : message[1],
                     'content' : message[2],
-            }
-
-
-    @staticmethod
-    def convert_friend_requests_data_db_form_to_dict(db_data) :
-        for request in db_data :
-            yield {
-                    'from' : request[0],
             }
 
     def __init__(self, user_data:dict, db) :
@@ -55,43 +45,22 @@ class User :
         res = cur.fetchall()
         return res[0][0]
 
-#send a friend request to someone 
-    def friend_request_send(self, to) :
-        cur = self.db.cursor()
-        cur.execute(f'INSERT INTO `friend_requests` VALUES (0, "{self.username}", "{to}", 0)')
-        self.db.commit()
-
-#craete a vertex and update the friend_request status to 1 -> means that is accepted
-    def friend_request_accept(self, to) :
-        cur = self.db.cursor()
-        cur.execute(f'INSERT INTO `vertices` VALUES (0, "{self.username}", "{to}")')
-        self.db.commit()
-
-        cur.execute(f'UPDATE `friend_requests` SET `status` = 1 WHERE `from` = "{self.username}" AND `to` = "{to}" ')
-        self.db.commit()
-
-#update the friend_request status to 2 -> means a request that is rejected
-    def friend_request_reject(self, to) :
-        cur = self.db.cursor()
-        cur.execute(f'UPDATE `friend_requests` SET `status` = 2 WHERE `from` = "{self.username}" AND `to` = "{to}" ')
-        self.db.commit()
-
     def friend_request_get(self, limit=0) :
         result = []
         if limit :
             cur = self.db.cursor()
             cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from friend_requests join users where friend_requests.from = users.username and friend_requests.to = "{self.username}" and friend_requests.status = 0 limit {limit}')
             res = cur.fetchall()
-            for user in self.__conver_users_db_form_to_dict(res) :
+            for user in self.__convert_users_db_form_to_dict(res) :
                 result.append(user)
         else :
             cur = self.db.cursor()
             cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from friend_requests join users where friend_requests.from = users.username and friend_requests.to = "{self.username}" and friend_requests.status = 0')
             res = cur.fetchall()
-            for user in self.__conver_users_db_form_to_dict(res) :
+            for user in self.__convert_users_db_form_to_dict(res) :
                 result.append(user)
 
-        return  result
+        return result
 
 #send a messege to someone
     def messege_send(self, to, title, text) :
@@ -129,7 +98,7 @@ class User :
         cur.execute(f'select `username`, `full_name`, `email`, `phone_number`, `age`, `bio` from users left join vertices on vertices.from!="{self.username}" and vertices.to!=users.username  where users.privacy_status=1 order by rand() limit {count} ')
         res = cur.fetchall()
 
-        for user in self.__conver_users_db_form_to_dict(res) :
+        for user in self.__convert_users_db_form_to_dict(res) :
             result.append(user)
 
         return result

@@ -1,8 +1,5 @@
 from hashlib import md5
 
-
-
-
 class Db : 
     __slot__ = ['db']
 
@@ -50,7 +47,6 @@ class Db :
         self.db.commit()
 
 
-
     #craete a vertex and update the friend_request status to 1 -> means that is accepted
     def friend_request_accept(self, from_, to) :
         cur = self.db.cursor()
@@ -72,18 +68,3 @@ class Db :
         cur = self.db.cursor()
         cur.execute(f'INSERT INTO `friend_requests` VALUES (0, "{from_}", "{to}", 0)')
         self.db.commit()
-
-#data = {
-#        "username" : "mmd",
-#        "full_name" : "mmd por",
-#        "age" : 20,
-#        "email" : "mmd@gmail.com",
-#        "phone_number" : "09123456986",
-#        "bio" : "bad bitch",
-#        "privacy_status" : 1, 
-#        "password" : "mmd1234",
-#        }
-#
-#user_add(mydb, data)
-#user = user_get_data(mydb, "mmd", "mmd1234")
-#print(user)
