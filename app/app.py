@@ -1,18 +1,14 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import mysql.connector
 
-from src import Db, User
+from src import Db, User, CONSTS
 
-HOST = 'localhost'
-DATABASE = 'pars_messenger'
-USER = 'prrh'
-PASSWORD = 'parsa1981'
 
 conn = mysql.connector.connect(
-   host=HOST,
-   database=DATABASE,
-   user=USER,
-   password=PASSWORD,
+   host=CONSTS.DB_HOST,
+   database=CONSTS.DB_NAME,
+   user=CONSTS.DB_USER,
+   password=CONSTS.DB_PASSWORD,
 )
 
 db = Db(conn)
@@ -40,7 +36,7 @@ def get_error() :
 
 
 app = Flask(__name__)
-app.secret_key = '3PVj9PQam6'
+app.secret_key = CONSTS.SECRET_KEY
 
 """
 index page and login page are the same
