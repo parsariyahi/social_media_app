@@ -1,17 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-import mysql.connector
+from flask_sqlalchemy import SQLAlchemy
 
-from src import Db, User, CONSTS
-
-
-conn = mysql.connector.connect(
-   host=CONSTS.DB_HOST,
-   database=CONSTS.DB_NAME,
-   user=CONSTS.DB_USER,
-   password=CONSTS.DB_PASSWORD,
-)
-
-db = Db(conn)
+from src import db, User, Message, FriendRequest, Vertex, CONSTS
 
 
 def set_context_profile(user: User) -> dict :
@@ -37,6 +27,10 @@ def get_error() :
 
 app = Flask(__name__)
 app.secret_key = CONSTS.SECRET_KEY
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://prrh:parsa1981@localhost/pars_messenger'
+db.init_app(app)
+db.create_all(app=app)
+
 
 """
 index page and login page are the same
