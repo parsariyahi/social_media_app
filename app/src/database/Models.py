@@ -3,6 +3,8 @@ from flask_login import UserMixin
 from .. import db #this is SQLAlchemy()
 
 class User(db.Model, UserMixin) :
+    __tablename__ = 'users'
+
     user_id = db.Column(db.Intiger, primary_key=True)
     username = db.Column(db.String(150))
     full_name = db.Column(db.String(150))
@@ -17,6 +19,8 @@ class User(db.Model, UserMixin) :
         return '<User %r>' % self.username
 
 class Message(db.Model) :
+    __tablename__ = 'messages'
+
     message_id = db.Column(db.Intiger, primary_key=True)
     from_node = db.Column(db.String(150))
     to_node = db.Column(db.String(150))
@@ -24,13 +28,17 @@ class Message(db.Model) :
     content = db.Column(db.Text)
 
 class FriendRequest(db.Model) :
+    __tablename__ = 'friend_requests'
+
     request_id = db.Column(db.Intiger, primary_key=True)
     from_node = db.Column(db.String(150))
     to_node = db.Column(db.String(150))
-    status = db.Column(db.Intiger)
+    status = db.Column(db.Intiger, defualt=0)
 
 
 class Vertex(db.Model) :
+    __tablename__ = 'vertices'
+
     vertex_id = db.Column(db.Intiger, primary_key=True)
     from_node = db.Column(db.String(150))
     to_node = db.Column(db.String(150))

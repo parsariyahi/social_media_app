@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
-from src import db, User, Message, FriendRequest, Vertex, CONSTS
+from src import (
+        db, User, Message, FriendRequest, Vertex, CONSTS,
+       auth, message, friend_request, profile, 
+    )
 
 
 def set_context_profile(user: User) -> dict :
@@ -30,6 +33,11 @@ app.secret_key = CONSTS.SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://prrh:parsa1981@localhost/pars_messenger'
 db.init_app(app)
 db.create_all(app=app)
+
+app.register_blueprint(auth)
+app.register_blueprint(message)
+app.register_blueprint(friend_request)
+app.register_blueprint(profile)
 
 
 """
