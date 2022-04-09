@@ -17,20 +17,19 @@ def login():
                 'password' : request.form.get('password', None),
         }
 
-        user = User.query.filter_by(username=user['username']).first()
-
+        user_db = User.query.filter_by(username=user['username']).first()
         if user :
-            if check_password_hash(user.password, user['password']) :
+            if check_password_hash(user_db.password, user['password']) :
                 flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
+                login_user(user_db, remember=True)
                 #TODO this must send user to profile, something like views.profile
-                return redirect(url_for('views.home'))
+                return redirect(url_for('dashboard.index'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exist.', category='error')
 
-    return render_template("login.html", user=current_user)
+    return render_template("login.html")
 
 
 @auth.route('/logout')
@@ -51,12 +50,11 @@ def register():
                 'full_name' : request.form.get('full_name', None),
                 'email' : request.form.get('email', None),
                 'phone_number' : request.form.get('phone_number', None),
-                'age' : request.form.get('age', None),
+                'age' : int(request.form.get('age', 0)),
                 'bio' : request.form.get('bio', None),
-                'privacy_status' : request.form.get('privacy_status', None),
+                'privacy_status' : int(request.form.get('privacy_status', 0)),
                 'password' : generate_password_hash(request.form.get('password', ''), method='sha256'), 
         }
-
         user = User.query.filter_by(username=new_user['username']).first()
         if user:
               flash('User already exists.', category='error')
@@ -67,7 +65,13 @@ def register():
               login_user(new_user, remember=True)
               flash('Account created!', category='success')
               #TODO this must send user to profile, something like views.profile
-              return redirect(url_for('views.home'))
+              return redirect(url_for('dashboard.index'))
 
 
-    return render_template("login.html", user=current_user)
+    return render_template("register.html", user=current_user)
+
+
+@auth.route('/logintest')
+@login_required
+def test_auth():
+    return {'some' : 'auth'}

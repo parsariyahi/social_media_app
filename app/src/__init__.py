@@ -1,14 +1,14 @@
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 
 #from .database.db_oprations import Db
 #from .objects.User import User
 from .consts import CONSTS
-from .database.Models import User, Message, FriendRequest, Vertex
+from .database.Models import db, User, Message, FriendRequest, Vertex
 
 from .routes.auth import auth
 from .routes.message import message
-from .routes.request import friend_request
-from .routes.profile import profile
+from .routes.friend_request import friend_request
+from .routes.dashboard import dashboard
 
 #our db is here to be used everywhere
-db = SQLAlchemy()
+# db = SQLAlchemy()

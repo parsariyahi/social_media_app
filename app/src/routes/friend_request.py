@@ -20,3 +20,8 @@ def friend_request_send():
         db.session.commit()
 
         return redirect(url_for('profile.profile'))
+
+
+@friend_request.route('/test')
+def test_req():
+    return {'some': 'message'}

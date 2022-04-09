@@ -22,3 +22,10 @@ def send_msg():
         db.session.add(new_msg)
         db.session.commit()
         return redirect(url_for('profile.profile'))
+
+
+
+
+@message.route('/test')
+def test_msg():
+    return {'some': 'message'}

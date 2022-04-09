@@ -17,19 +17,21 @@
 </head>
 
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <div id="container-login">
         <div id="title">
             <i class="material-icons lock">lock</i> Login
         </div>
 
-        {% if context.error %}
-        <div id="title">
-            wrong username or password
-        </div>
-        {% endif %}
-
-
-        <form action="profile" method="post">
+        <form action="login" method="post">
             <div class="input">
                 <div class="input-addon">
                     <i class="material-icons">face</i>
@@ -51,8 +53,9 @@
 
         <div class="register">
             Don't have an account yet?
-            <a href="{{ url_for('register') }}"><button id="register-link">Register here</button></a>
+            <a href="{{ url_for('auth.register') }}"><button id="register-link">Register here</button></a>
         </div>
+
     </div>
 </body>
 </html>
