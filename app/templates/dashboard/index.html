@@ -42,11 +42,11 @@
       {% endif %}    
   </p>
 
-          <form action="/msg/accept" method="POST" name="form" style="padding: 16px;">
+          <form action="/msg/send" method="POST" name="form" style="padding: 16px;">
 
             <div class="u-form-group u-form-name">
               <label for="name-4c18" class="u-label">To</label>
-              <input type="text" placeholder="Enter the Username" id="name-4c18" name="username" class="u-grey-5 u-input u-input-rectangle" required="">
+              <input type="text" placeholder="Enter the Username" id="name-4c18" name="to_node" class="u-grey-5 u-input u-input-rectangle" required="">
             </div>
 
             <br>
@@ -60,7 +60,7 @@
 
             <div class="u-form-group u-form-message">
               <label for="message-4c18" class="u-label">Message</label>
-              <textarea placeholder="Enter your message" rows="4" cols="50" id="message-4c18" name="message" class="u-grey-5 u-input u-input-rectangle" required=""></textarea>
+              <textarea placeholder="Enter your message" rows="4" cols="50" id="message-4c18" name="content" class="u-grey-5 u-input u-input-rectangle" required=""></textarea>
             </div>
 
             <br>

@@ -7,7 +7,9 @@ from .. import db
 
 
 auth = Blueprint('auth', __name__)
-
+""" 
+prefix: /auth/<routes>
+"""
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -18,7 +20,7 @@ def login():
         }
 
         user_db = User.query.filter_by(username=user['username']).first()
-        if user :
+        if user_db :
             if check_password_hash(user_db.password, user['password']) :
                 flash('Logged in successfully!', category='success')
                 login_user(user_db, remember=True)
@@ -64,14 +66,7 @@ def register():
               db.session.commit()
               login_user(new_user, remember=True)
               flash('Account created!', category='success')
-              #TODO this must send user to profile, something like views.profile
+
               return redirect(url_for('dashboard.index'))
 
-
     return render_template("register.html", user=current_user)
-
-
-@auth.route('/logintest')
-@login_required
-def test_auth():
-    return {'some' : 'auth'}

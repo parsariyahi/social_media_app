@@ -1,10 +1,13 @@
 from flask import Blueprint, redirect, url_for, request
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from ..database.Models import FriendRequest
 from .. import db
 
 friend_request = Blueprint('friend_request', __name__)
+""" 
+prefix: /req/<routes>
+"""
 
 @friend_request.route('/send', methods=['GET', 'POST'])
 @login_required
@@ -14,6 +17,8 @@ def send():
     only logged in users
 
     methods: GET, POST
+
+    return: dashboard main page
     """
     if request.method == 'POST' :
         req = {
@@ -24,7 +29,7 @@ def send():
         db.session.add(new_req)
         db.session.commit()
 
-        return redirect(url_for('profile.profile'))
+        return redirect(url_for('dashboard.index'))
 
 
 @friend_request.route('/accept', methods=['GET', 'POST'])
@@ -35,6 +40,8 @@ def accept():
     only logged in users
 
     methods: GET, POST
+
+    return: dashboard main page
     """
     if request.method == 'POST':
         req = {
@@ -50,9 +57,7 @@ def accept():
         req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 1})
         db.session.commit()
 
-        return redirect(url_for('profile.profile'))
-
-    return redirect(url_for('profile.profile'))
+    return redirect(url_for('dashboard.index'))
 
 
 
@@ -64,6 +69,8 @@ def reject():
     only logged in users
 
     methods: GET, POST
+
+    return: dashboard main page
     """
     if request.method == 'POST':
         req = {
@@ -79,6 +86,4 @@ def reject():
         req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 2})
         db.session.commit()
 
-        return redirect(url_for('profile.profile'))
-
-    return redirect(url_for('profile.profile'))
+    return redirect(url_for('dashboard.index'))
