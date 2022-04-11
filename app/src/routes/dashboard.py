@@ -14,16 +14,16 @@ prefix: /dash/<routes>
 def index() :
 
     """Geting the information that we need ro show in dashboard"""
-    messages = Message.query.filter_by(to_node=current_user.username)
-    followers = Vertex.query.filter_by(to_node=current_user.username)
-    followings = Vertex.query.filter_by(from_node=current_user.username)
-    requests = FriendRequest.query.filter_by(to_node=current_user.username)
+    messages = Message.query.filter_by(to_node=current_user.username).all()
+    requests = FriendRequest.query.filter_by(to_node=current_user.username).all()
+    followers = Vertex.query.filter_by(to_node=current_user.username).count()
+    followings = Vertex.query.filter_by(from_node=current_user.username).count()
 
     context = {
         'messages': messages,
-        'followers': followers,
-        'followings': followings,
         'requests': requests,
+        'followers_count': followers,
+        'followings_count': followings,
     }
 
     return render_template('dashboard/index.html', context=context)

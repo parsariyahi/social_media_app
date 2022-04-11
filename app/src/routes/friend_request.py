@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, url_for, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
-from ..database.Models import FriendRequest
+from ..database.Models import FriendRequest, Vertex
 from .. import db
 
 friend_request = Blueprint('friend_request', __name__)
@@ -22,7 +22,7 @@ def send():
     """
     if request.method == 'POST' :
         req = {
-            'from_node': request.form.get('from_node', ''),
+            'from_node': current_user.username,
             'to_node': request.form.get('to_node', ''),
         }
         new_req = FriendRequest(**req)
@@ -43,18 +43,22 @@ def accept():
 
     return: dashboard main page
     """
-    if request.method == 'POST':
-        req = {
-            'from_node': request.form.get('from_node', '')
-        }
+    req = {
+        'from_node': request.args.get('from_node', '')
+    }
 
-        """Change requests status,
+    """Change requests status,
 
-        status = 0 : nothing happend
-        status = 1 : accepted
-        status = 2 : rejected
-        """
+    status = 0 : nothing happend
+    status = 1 : accepted
+    status = 2 : rejected
+    """
+    if req['from_node'] :
         req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 1})
+        db.session.commit()
+
+        friend = Vertex(from_node=req['from_node'], to_node=current_user.username)
+        db.session.add(friend)
         db.session.commit()
 
     return redirect(url_for('dashboard.index'))
@@ -72,17 +76,17 @@ def reject():
 
     return: dashboard main page
     """
-    if request.method == 'POST':
-        req = {
-            'from_node': request.form.get('from_node', '')
-        }
+    req = {
+        'from_node': request.args.get('from_node', '')
+    }
 
-        """Change requests status,
+    """Change requests status,
 
-        status = 0 : in process
-        status = 1 : accepted
-        status = 2 : rejected
-        """
+    status = 0 : nothing happend
+    status = 1 : accepted
+    status = 2 : rejected
+    """
+    if req['from_node'] :
         req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 2})
         db.session.commit()
 
