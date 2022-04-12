@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>freinds</title>
+</head>
+<body>
+    
+    <div>
+        <h1>
+            followers
+        </h1>
+        {%for follower in context.followers%}
+        <p>{{follower}}</p>
+        {%endfor%}
+    </div>
+
+    <div>
+        <h1>
+            Followings
+        </h1>
+        {%for following in context.followings%}
+        <p>{{following}}</p>
+        {%endfor%}
+    </div>
+
+<a href="/dash">return to dashboard</a>
+
+</body>
+</html>

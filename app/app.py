@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
-from src.routes import auth, message, friend_request, dashboard
+from src.routes import auth, message, friend_request, dashboard, test 
 from src.database import User, FriendRequest, Vertex, Message
 from src.consts import SECRET_KEY, SQLALCHEMY_DATABASE_URI
 from src import db
@@ -25,6 +25,7 @@ app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(message, url_prefix='/msg')
 app.register_blueprint(friend_request, url_prefix='/req')
 app.register_blueprint(dashboard, url_prefix='/dash')
+app.register_blueprint(test, url_prefix='/test') #just for testing
 
 
 login_manager = LoginManager()
