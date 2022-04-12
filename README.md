@@ -1,8 +1,9 @@
-# Simple Web Messenger
+# basic Web social media app
 
 ## about the project
 
-this is a simple web messenger
+this project is the base of a social media app
+its a web app written with Flask
 
 its good for college assignments
 
