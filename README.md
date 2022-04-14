@@ -17,8 +17,31 @@ this project is a personal student learning project
 
 ## how to use
 
+### install the requirements
 ```bash
 pip install -r requirements.txt
+```
+
+### put your database params in [app/src/consts/CONSTS.py](https://github.com/parsariyahi/social_media_app/blob/master/app/src/consts/CONSTS.py) and edit the SECRET_KEY const
+```python
+"""
+this project is using mysql
+but because of SQLAlchemy
+you can use your favorite dbms
+"""
+
+DBMS='<your db provider>' 
+DB_HOST='<your host>'
+DB_NAME='<your db name>'
+DB_USER='<your user>'
+DB_PASSWORD='<your users password>'
+
+"""
+:pattern <dbms>://<username>:<password>@host/<database name>
+"""
+
+SQLALCHEMY_DATABASE_URI=f"{DBMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}" #this will create engine pattern for SQLAlchemy
+SECRET_KEY = '<some random strings>'
 ```
 
 ### for the fist time, uncomment these lines in [app/app.py](https://github.com/parsariyahi/social_media_app/blob/master/app/app.py) to initialize database tables
@@ -36,6 +59,7 @@ to create the database tables
 db.drop_all(app=app)
 db.create_all(app=app)
 ```
+
 ### then run this command
 ```bash
 python app/app.py
