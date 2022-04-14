@@ -5,6 +5,7 @@
 this project is based on instagram logic
 
 its a web app written with Flask
+
 this project is a personal student learning project
 
 ## written with
@@ -20,7 +21,7 @@ this project is a personal student learning project
 pip install -r requirements.txt
 ```
 
-### for the fist time, uncomment these lines in app/app.py to initialize database tables
+### for the fist time, uncomment these lines in [app/app.py](https://github.com/parsariyahi/social_media_app/blob/master/app/app.py) to initialize database tables
 ```python
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
