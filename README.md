@@ -35,7 +35,7 @@ to create the database tables
 db.drop_all(app=app)
 db.create_all(app=app)
 ```
-
+### then run this command
 ```bash
 python app/app.py
 ```
