@@ -6,19 +6,19 @@ from .. import db
 
 friend_request = Blueprint('friend_request', __name__)
 """ 
-prefix: /req/<routes>
+:prefix /req/<routes>
 """
 
 @friend_request.route('/send', methods=['GET', 'POST'])
 @login_required
 def send():
-    """Send a friend request to someone,
+    """
+    Send a friend request,
+    login is required.
 
-    only logged in users
-
-    methods: GET, POST
-
-    return: dashboard main page
+    :methods GET, POST
+    :return
+        :redirect dashboard
     """
     if request.method == 'POST' :
         req = {
@@ -29,19 +29,19 @@ def send():
         db.session.add(new_req)
         db.session.commit()
 
-        return redirect(url_for('dashboard.index'))
+    return redirect(url_for('dashboard.index'))
 
 
 @friend_request.route('/accept', methods=['GET', 'POST'])
 @login_required
 def accept():
-    """Accept a friend request,
+    """
+    Accept a friend request,
+    login is required.
 
-    only logged in users
-
-    methods: GET, POST
-
-    return: dashboard main page
+    :methods GET, POST
+    :return
+        :redirect dashboard 
     """
     req = {
         'from_node': request.args.get('from_node', '')
@@ -54,7 +54,7 @@ def accept():
     status = 2 : rejected
     """
     if req['from_node'] :
-        req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 1})
+        req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 1}) #set status to 1
         db.session.commit()
 
         friend = Vertex(from_node=req['from_node'], to_node=current_user.username)
@@ -68,13 +68,13 @@ def accept():
 @friend_request.route('/reject', methods=['GET', 'POST'])
 @login_required
 def reject():
-    """Reject a friend request,
+    """
+    Reject a friend request,
+    login is required.
 
-    only logged in users
-
-    methods: GET, POST
-
-    return: dashboard main page
+    :methods GET, POST
+    :return
+        :redirect dashboard
     """
     req = {
         'from_node': request.args.get('from_node', '')
@@ -87,7 +87,7 @@ def reject():
     status = 2 : rejected
     """
     if req['from_node'] :
-        req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 2})
+        req_db = FriendRequest.query.filter_by(from_node=req['from_node']).update({'status': 2}) #set status to 2
         db.session.commit()
 
     return redirect(url_for('dashboard.index'))

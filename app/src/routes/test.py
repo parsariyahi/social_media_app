@@ -4,6 +4,12 @@ from ..database.Models import User, FriendRequest, Message, Vertex
 
 test = Blueprint('test', __name__)
 
+"""
+
+THIS FILE IS JUST FOR TESTING
+ITS NOT A PART OF THE APP
+
+"""
 
 @test.route('users')
 def get_users():

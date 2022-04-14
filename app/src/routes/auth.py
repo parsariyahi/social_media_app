@@ -8,11 +8,17 @@ from .. import db
 
 auth = Blueprint('auth', __name__)
 """ 
-prefix: /auth/<routes>
+:prefix /auth/<routes>
 """
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    :methods GET, POST
+    :return
+        :redirect dashboard, if user Logged
+        :render login template
+    """
     if request.method == 'POST' :
         user = {
                 'username' : request.form.get('username', ''),
@@ -24,7 +30,7 @@ def login():
             if check_password_hash(user_db.password, user['password']) :
                 flash('Logged in successfully!', category='success')
                 login_user(user_db, remember=True)
-                #TODO this must send user to profile, something like views.profile
+
                 return redirect(url_for('dashboard.index'))
             else:
                 flash('Incorrect password, try again.', category='error')
@@ -37,8 +43,11 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
-    """Logout user and
-    send it to login page
+    """
+    login is required
+
+    :return
+        :redirect login 
     """
     logout_user()
     return redirect(url_for('auth.login'))
@@ -46,6 +55,12 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    :methods GET, POST
+    :return
+        :redirect dashboard, if user registered
+        :render register template
+    """
     if request.method == 'POST' :
         new_user = {
                 'username' : request.form.get('username', None),
