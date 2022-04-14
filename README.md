@@ -40,7 +40,8 @@ DB_PASSWORD='<your users password>'
 :pattern <dbms>://<username>:<password>@host/<database name>
 """
 
-SQLALCHEMY_DATABASE_URI=f"{DBMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}" #this will create engine pattern for SQLAlchemy
+#this will create engine pattern for SQLAlchemy
+SQLALCHEMY_DATABASE_URI=f"{DBMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 SECRET_KEY = '<some random strings>'
 ```
 
@@ -56,8 +57,8 @@ db.init_app(app)
 uncomment these lines,
 to create the database tables
 """
-db.drop_all(app=app)
-db.create_all(app=app)
+db.drop_all(app=app) #<--- this
+db.create_all(app=app) #<--- this
 ```
 
 ### then run this command
