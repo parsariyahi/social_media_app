@@ -22,7 +22,7 @@ this project is a personal student learning project
 pip install -r requirements.txt
 ```
 
-### put your database params in [app/src/consts/CONSTS.py](https://github.com/parsariyahi/social_media_app/blob/master/app/src/consts/CONSTS.py) and edit the SECRET_KEY const
+### put your database configs in [app/src/consts/CONSTS.py](https://github.com/parsariyahi/social_media_app/blob/master/app/src/consts/CONSTS.py) and edit the SECRET_KEY const
 ```python
 """
 this project is using mysql
